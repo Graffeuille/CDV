@@ -110,24 +110,19 @@ quatre lignes tacticle : appeler, écrire, ouvrir le site,
 ouvrir l'itinéraire. Le bouton « Ajouter à mes contacts » télécharge la fiche
 `.vcf`.
 
-### Trois formes d'adresse
+### Deux formes d'adresse
 
 | Adresse | Usage |
 | --- | --- |
 | `…/equipe/prenom-nom/` | **La bonne.** 77 caractères : le QR tombe en version 5, ses modules mesurent **0,54 mm** imprimés, il se scanne sans effort. |
 | `…/#prenom-nom` | Ancienne forme, toujours acceptée pour ne pas invalider un QR déjà imprimé. |
-| `…/#c=<données>` | Les coordonnées voyagent dans l'URL : rien à déposer sur le site, mais l'adresse atteint ~380 caractères et le QR descend à ~0,26 mm par module, ce qui devient juste pour un tirage à 24 mm. |
-
-L'éditeur affiche en continu l'URL visée, la version du QR et la taille de
-module obtenue, avec un verdict explicite : on voit tout de suite si le code
-sera confortable à scanner.
 
 ### Après une modification de `carte.json`
 
 La page relit le fichier à chaque ouverture, donc en local un simple
 rafraîchissement suffit. Sur GitHub Pages, le réseau de diffusion peut servir
-l'ancienne version quelques minutes après le `git push` — c'est le délai de
-publication, pas un cache du navigateur.
+l'ancienne version quelques minutes après le `git push` - c'est le délai de
+publication.
 
 ## L'éditeur
 
@@ -207,7 +202,7 @@ réel de la carte, avec identifiant court et avec coordonnées en URL.
 
 C'est fait : `Settings → Pages`, « Deploy from a branch », branche `main`,
 dossier racine. Il n'y a rien à compiler. Le fichier `.nojekyll` à la racine
-demande à GitHub de servir les fichiers tels quels — sans lui, tout dossier
+demande à GitHub de servir les fichiers tels quels - sans lui, tout dossier
 commençant par un tiret bas, dont `equipe/_modele`, serait écarté du site.
 
 En local :
