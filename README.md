@@ -8,7 +8,7 @@ Toutes les cartes, un seul dépôt :
 | `index.html` | Entrée de secours : affiche la personne désignée par le fragment d'URL. |
 | `editeur.html` | **L'éditeur.** On y saisit les coordonnées, on voit la carte se composer, on exporte le fichier d'impression. Aucune page publique n'y renvoie. |
 
-Pourquoi ? : tout tourne dans le navigateur : pas de serveur, pas de compte, pas de
+Pourquoi GitHub ? : tout tourne dans le navigateur : pas de serveur, pas de compte, pas de
 dépendance externe.
 
 ## Les adresses en ligne
@@ -20,7 +20,7 @@ Le site est publié à la racine du dépôt, depuis la branche `main` :
 
 ### Une adresse par employé
 
-C'est celle-ci que le QR code de sa carte imprimée fait ouvrir.
+Ce sont celles-ci que les QR code vont ouvrir :
 
 | Personne | Adresse |
 | --- | --- |
@@ -43,11 +43,6 @@ C'est celle-ci que le QR code de sa carte imprimée fait ouvrir.
 | <https://graffeuille.github.io/CDV/#loic-bernard> | Ancienne forme par identifiant, toujours acceptée pour ne pas invalider un QR déjà imprimé. |
 | <https://graffeuille.github.io/CDV/equipe/sarah-fossard/carte.json> | La fiche brute d'une personne, telle que la page la lit. |
 
-Si vous branchez un jour un vrai domaine sur ce site, seule la racine change :
-les chemins restent identiques. Il faudra alors renseigner ce domaine dans le
-champ « Adresse du site publié » de l'éditeur **avant** de réimprimer, puisque
-c'est lui que le QR encode.
-
 ## Un dossier par personne
 
 Chaque employé a son propre dossier, sa propre adresse et ses propres fichiers :
@@ -63,15 +58,11 @@ equipe/
     carte.json
 ```
 
-L'adresse du dossier ouvre la carte de la personne. Rien d'autre à
-déclarer : il n'y a pas de liste centrale à tenir à jour, le dossier *est* la
-déclaration.
-
 ### L'équipe déjà en place
 
 | Dossier | Personne | Fonction | Service |
 | --- | --- | --- | --- |
-| `alain-graffeuille` | Alain GRAFFEUILLE | Directeur | |
+| `alain-graffeuille` | Alain GRAFFEUILLE | Directeur Adjoint | |
 | `jerome-goumard` | Jérôme GOUMARD | Directeur | |
 | `marie-noelle-graffeuille` | Marie-Noëlle GRAFFEUILLE | Chef de projets et développement | |
 | `sarah-fossard` | Sarah FOSSARD | Commerciale | Grands Comptes |
@@ -81,8 +72,7 @@ déclaration.
 | `jean-michel-gaisnon` | Jean-Michel GAISNON | Responsable Atelier | Production Moteurs |
 | `loic-bernard` | Loïc BERNARD | Responsable Atelier | Production Moteurs |
 
-Toutes les coordonnées sont reprises des fichiers d'impression fournis. Le
-site est `www.graffeuille.fr` pour l'ensemble de l'équipe.
+Le site est `www.graffeuille.fr` pour l'ensemble de l'équipe.
 
 ### Ajouter un employé
 
