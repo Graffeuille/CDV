@@ -98,67 +98,15 @@ site est `www.graffeuille.fr` pour l'ensemble de l'équipe.
 charge le code commun. Il est donc identique dans tous les dossiers, et une
 refonte de la mise en page n'oblige jamais à repasser dessus.
 
-## Le verso suit une grille
-
-Les neuf fichiers d'impression obéissent au même gabarit, relevé sur leurs
-flux de contenu :
-
-- **3,88 mm (11 pt) entre deux lignes** du bloc identité, quel que soit leur
-  rôle ; **5,88 mm** entre la dernière ligne du nom et la fonction.
-- **Un bandeau rouge par ligne de nom**, ajusté à la largeur de cette ligne.
-  Un nom trop long pour le format se coupe et prend un second bandeau.
-- **La fonction est en italique 10 pt** ; le service, sous elle, est **droit,
-  en 9 pt et d'une graisse plus légère**. Ce sont deux champs distincts dans
-  l'éditeur, pas deux lignes d'un même texte.
-- **Le bloc de contact ne descend que s'il le faut** : il reste à 53,66 mm
-  tant que l'identité ne vient pas à sa rencontre. Une adresse trop longue ne
-  déborde pas, les trois lignes se resserrent ensemble.
-
-Le code vérifie ces règles sur les neuf cartes : les lignes de base calculées
-sont identiques à celles des fichiers d'origine.
-
-## Les fontes et les pictogrammes
-
-**Les pictogrammes sont les contours exacts** de la fonte d'icônes embarquée
-dans les fichiers fournis — un téléphone mobile, un avion en papier, une
-épingle — extraits et exprimés dans le repère de la fonte, ce qui les pose sur
-la ligne de base comme le fait le PDF. Seul le globe, absent des cartes, est
-redessiné : il ne sert qu'à la ligne « site internet », facultative.
-
-**La fonte du texte est Roboto Condensed**, servie par le site. La fonte
-d'origine, Author, est sous licence commerciale et ne peut pas être
-redistribuée ; il fallait donc une remplaçante libre dont les largeurs
-correspondent, parce que la mise en page en dépend : un nom trop large se
-coupe en deux lignes et décale tout le bloc.
-
-Les largeurs de référence ont été calculées à partir des métriques embarquées
-dans les PDF, puis comparées à dix fontes libres sur dix-sept chaînes des
-cartes réelles :
-
-| Fonte | Écart médian aux largeurs d'Author |
-| --- | --- |
-| **Roboto Condensed** | **+0,4 %** |
-| Barlow Semi Condensed | −2,5 % |
-| Archivo Narrow | −3,4 % |
-| Inter | +21,8 % |
-
-Inter, utilisée jusqu'ici, composait donc tout le verso 22 % trop large. Les
-fontes sont hébergées dans `assets/fonts/` plutôt que chargées depuis un
-tiers : la mise en page dépend de la mesure du texte rendu, et une fonte de
-repli plus large ferait basculer un nom sur deux lignes.
-
-Pour un tirage, l'imprimeur peut évidemment substituer Author dans le SVG
-exporté et retrouver le fichier d'origine au trait près.
-
 ## Ce que voit la personne qui scanne
 
 Le QR code ne contient pas la fiche mais **l'adresse de la page en ligne**. La
 différence compte : corriger un numéro sur le site met à jour toutes les cartes
-déjà distribuées, alors qu'un QR contenant une vCard fige les coordonnées à
+déjà distribuées, alors qu'un QR contenant une vCard fige les coordonnées dans
 l'encre.
 
 La page affiche le logo, le portrait s'il y en a un, le nom, la fonction, puis
-quatre lignes que l'on touche du pouce : appeler, écrire, ouvrir le site,
+quatre lignes tacticle : appeler, écrire, ouvrir le site,
 ouvrir l'itinéraire. Le bouton « Ajouter à mes contacts » télécharge la fiche
 `.vcf`.
 
