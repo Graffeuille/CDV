@@ -15,7 +15,8 @@ dépendance externe.
 
 Le site est publié à la racine du dépôt, depuis la branche `main` :
 
-<https://roseimprimerie-dot.github.io/Carte-Graffeuille/>
+<https://graffeuille.github.io/CDV/>
+
 
 ### Une adresse par employé
 
@@ -23,24 +24,24 @@ C'est celle-ci que le QR code de sa carte imprimée fait ouvrir.
 
 | Personne | Adresse |
 | --- | --- |
-| Alain GRAFFEUILLE | <https://roseimprimerie-dot.github.io/Carte-Graffeuille/equipe/alain-graffeuille/> |
-| Jérôme GOUMARD | <https://roseimprimerie-dot.github.io/Carte-Graffeuille/equipe/jerome-goumard/> |
-| Marie-Noëlle GRAFFEUILLE | <https://roseimprimerie-dot.github.io/Carte-Graffeuille/equipe/marie-noelle-graffeuille/> |
-| Sarah FOSSARD | <https://roseimprimerie-dot.github.io/Carte-Graffeuille/equipe/sarah-fossard/> |
-| Michaël MANCIA | <https://roseimprimerie-dot.github.io/Carte-Graffeuille/equipe/michael-mancia/> |
-| Mickaël MOREL | <https://roseimprimerie-dot.github.io/Carte-Graffeuille/equipe/mickael-morel/> |
-| Fabrice PELLIZOTTI | <https://roseimprimerie-dot.github.io/Carte-Graffeuille/equipe/fabrice-pellizotti/> |
-| Jean-Michel GAISNON | <https://roseimprimerie-dot.github.io/Carte-Graffeuille/equipe/jean-michel-gaisnon/> |
-| Loïc BERNARD | <https://roseimprimerie-dot.github.io/Carte-Graffeuille/equipe/loic-bernard/> |
+| Alain GRAFFEUILLE | <https://graffeuille.github.io/CDV/equipe/alain-graffeuille/> |
+| Jérôme GOUMARD | <https://graffeuille.github.io/CDV/equipe/jerome-goumard/> |
+| Marie-Noëlle GRAFFEUILLE | <https://graffeuille.github.io/CDV/equipe/marie-noelle-graffeuille/> |
+| Sarah FOSSARD | <https://graffeuille.github.io/CDV/equipe/sarah-fossard/> |
+| Michaël MANCIA | <https://graffeuille.github.io/CDV/equipe/michael-mancia/> |
+| Mickaël MOREL | <https://graffeuille.github.io/CDV/equipe/mickael-morel/> |
+| Fabrice PELLIZOTTI | <https://graffeuille.github.io/CDV/equipe/fabrice-pellizotti/> |
+| Jean-Michel GAISNON | <https://graffeuille.github.io/CDV/equipe/jean-michel-gaisnon/> |
+| Loïc BERNARD | <https://graffeuille.github.io/CDV/equipe/loic-bernard/> |
 
 ### Les autres adresses
 
 | Adresse | Ce qu'elle ouvre |
 | --- | --- |
-| <https://roseimprimerie-dot.github.io/Carte-Graffeuille/editeur.html> | L'éditeur. Aucune page publique n'y renvoie : il n'est ni listé, ni protégé. |
-| <https://roseimprimerie-dot.github.io/Carte-Graffeuille/> | Entrée de secours. Sans fragment, elle affiche la carte de Jérôme Goumard. |
-| <https://roseimprimerie-dot.github.io/Carte-Graffeuille/#loic-bernard> | Ancienne forme par identifiant, toujours acceptée pour ne pas invalider un QR déjà imprimé. |
-| <https://roseimprimerie-dot.github.io/Carte-Graffeuille/equipe/sarah-fossard/carte.json> | La fiche brute d'une personne, telle que la page la lit. |
+| <https://graffeuille.github.io/CDV/editeur.html> | L'éditeur. Aucune page publique n'y renvoie : il n'est ni listé, ni protégé. |
+| <https://graffeuille.github.io/CDV/> | Entrée de secours. Sans fragment, elle affiche la carte de Jérôme Goumard. |
+| <https://graffeuille.github.io/CDV/#loic-bernard> | Ancienne forme par identifiant, toujours acceptée pour ne pas invalider un QR déjà imprimé. |
+| <https://graffeuille.github.io/CDV/equipe/sarah-fossard/carte.json> | La fiche brute d'une personne, telle que la page la lit. |
 
 Si vous branchez un jour un vrai domaine sur ce site, seule la racine change :
 les chemins restent identiques. Il faudra alors renseigner ce domaine dans le
