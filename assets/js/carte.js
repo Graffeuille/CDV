@@ -1,23 +1,10 @@
-/*!
- * carte.js — page publique : affiche les coordonnées d'une personne et rien
- * d'autre. Elle est ouverte depuis le QR code du dos de la carte imprimée,
- * donc presque toujours sur un téléphone.
- *
- * La page est construite entièrement ici, à partir d'un gabarit vide. Les
- * dossiers d'employés ne contiennent donc qu'un index.html de quelques lignes
- * qui n'a jamais à être remis à jour quand la mise en page évolue.
- *
- * Deux façons de désigner la personne à afficher :
- *   window.CARTE = { source: 'carte.json' }   dossier d'employé, adresse propre
- *   fragment d'URL                            #identifiant, ou #c=<coordonnées>
- */
 (function () {
   'use strict';
 
   var DEFAULT_SLUG = 'jerome-goumard';
 
-  // Emplacements où chercher la fiche d'un identifiant court. Le premier est
   // l'organisation actuelle ; le second garde valides les QR déjà imprimés.
+  
   var LOOKUP = ['equipe/{slug}/carte.json', 'cartes/{slug}.json'];
 
   var CHEVRON = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" '
@@ -115,7 +102,7 @@
   }
 
   function render(d) {
-    document.title = Contact.fullName(d) + ' — ' + (d.company || 'GRAFFEUILLE');
+    document.title = Contact.fullName(d) + ' - ' + (d.company || 'GRAFFEUILLE');
     var accent = d.accent || Contact.DEFAULTS.accent;
     document.documentElement.style.setProperty('--accent', accent);
     var theme = document.querySelector('meta[name="theme-color"]');
