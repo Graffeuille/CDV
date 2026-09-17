@@ -4,9 +4,9 @@ Toutes les cartes, un seul dépôt :
 
 Attention pour le lien QR : 
 
-❌ Ne renommez jamais votre nom d'utilisateur GitHub.
-❌ Ne renommez jamais le nom de votre dépôt GitHub.
-❌ Ne passez pas le dépôt de "Public" à "Privé" (les pages GitHub gratuites doivent obligatoirement rester publiques).
+❌ Ne renommez jamais votre nom d'utilisateur GitHub.,
+❌ Ne renommez jamais le nom de votre dépôt GitHub.,
+❌ Ne passez pas le dépôt de "Public" à "Privé" (les pages GitHub gratuites doivent obligatoirement rester publiques).,
 
 | Page | À qui elle s'adresse |
 | --- | --- |
