@@ -1,6 +1,5 @@
-/*!
- * icons.js - pictogrammes de la carte.
- */
+// icons.js - pictogrammes de la carte.
+
 window.Icons = (function () {
   'use strict';
 
@@ -16,10 +15,19 @@ window.Icons = (function () {
     globe: { d: 'M512 160a352 352 0 1 0 0 704 352 352 0 1 0 0-704Z'
                   + 'M512 160c-97 0-176 158-176 352s79 352 176 352 176-158 176-352-79-352-176-352Z'
                   + 'M184 384h656M184 640h656',
-             stroke: 64, box: [128, 128, 896, 896] }
+             stroke: 64, box: [128, 128, 896, 896] },
+    linkedin: { d: 'M286 88H738A110 110 0 0 1 848 198V650A110 110 0 0 1 738 760'
+              + 'H286A110 110 0 0 1 176 650V198A110 110 0 0 1 286 88Z'
+              + 'M728 152H296A56 56 0 0 0 240 208V640A56 56 0 0 0 296 696'
+              + 'H728A56 56 0 0 0 784 640V208A56 56 0 0 0 728 152Z'
+              + 'M330 260H402V490H330Z'
+              + 'M330 528H402V600H330Z'
+              + 'M452 260V430A131 131 0 0 0 714 430V260H642V430'
+              + 'A59 59 0 0 1 524 430V260Z',
+            box: [176, 88, 848, 760] }
   };
 
-  /* Dessine un tracé, plein ou au filet. */
+  // Dessine un tracé, plein ou au filet.
   
   function paint(name, color) {
     var g = GLYPHS[name];
@@ -28,16 +36,7 @@ window.Icons = (function () {
          + g.stroke + '" stroke-linecap="round"/>';
   }
 
-   /* Pour la carte imprimée : posé sur une ligne de base, en millimètres. */
-
-  function group(name, x, baseline, size) {
-    var k = size / UPEM;
-    return '<g transform="translate(' + x + ' ' + baseline + ') scale('
-         + k.toFixed(6) + ' ' + (-k).toFixed(6) + ')">'
-         + paint(name, arguments[4] || 'currentColor') + '</g>';
-  }
-
-   /* Pour la page web : carré autonome, en pixels. */
+   // Pour la page web : carré autonome, en pixels.
 
   function inline(name, size, cls) {
     var b = GLYPHS[name].box;
