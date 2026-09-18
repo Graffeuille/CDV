@@ -23,7 +23,8 @@ window.Contact = (function () {
     tagline: 'Reconditionnement moteurs,\nboîtes de vitesses et ponts.',
     showBaseline: true,
     accent: '#e63329',
-    photo: ''
+    photo: '',
+    en: { tagline: 'Remanufacturing engines,\ngearboxes and axles.' }
   };
 
   var BOOLEANS = ['showBaseline'];
@@ -31,8 +32,14 @@ window.Contact = (function () {
   // Complète une fiche avec les valeurs communes.
   function normalise(d) {
     var out = Object.assign({}, DEFAULTS, d || {});
+    out.en = Object.assign({}, DEFAULTS.en, (d && d.en) || {});
     BOOLEANS.forEach(function (k) { out[k] = !!out[k]; });
     return out;
+  }
+
+  // La fiche dans une langue. Un champ non traduit reste en français.
+  function localise(d, lang) {
+    return lang === 'en' ? Object.assign({}, d, d.en) : d;
   }
 
   // Prénom et NOM.
@@ -129,7 +136,8 @@ window.Contact = (function () {
 
   return {
     DEFAULTS: DEFAULTS,
-    normalise: normalise, fullName: fullName, slugify: slugify,
+    normalise: normalise, localise: localise,
+    fullName: fullName, slugify: slugify,
     cityLine: cityLine, addressQuery: addressQuery,
     websiteUrl: websiteUrl, linkedinUrl: linkedinUrl,
     emails: emails, e164: e164, telType: telType, vcard: vcard,
