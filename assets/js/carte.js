@@ -160,7 +160,7 @@
     shareHandler = function () {
       var payload = {
         title: Contact.fullName(d),
-        text: Contact.fullName(d) + (d.role ? ' — ' + d.role : ''),
+        text: Contact.fullName(d) + (d.role ? ' - ' + d.role : ''),
         url: location.href
       };
       if (navigator.share) {

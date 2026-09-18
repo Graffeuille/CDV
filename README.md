@@ -1,8 +1,8 @@
-# Cartes de visite en ligne — GRAFFEUILLE
+# Cartes de visite en ligne - GRAFFEUILLE
 
 Chaque employé a une adresse à lui. Le QR code au dos de sa carte imprimée
 l'ouvre sur le téléphone de la personne qui vient de scanner : logo, portrait,
-nom, fonction, puis les coordonnées à toucher — appeler, écrire, ouvrir le
+nom, fonction, puis les coordonnées à toucher - appeler, écrire, ouvrir le
 site, ouvrir l'itinéraire. Le bouton « Ajouter à mes contacts » télécharge la
 fiche `.vcf`.
 
@@ -18,7 +18,7 @@ dépendance extérieure.
 Le site est publié à la racine du dépôt, depuis la branche `main` :
 <https://graffeuille.github.io/CDV/>
 
-### Une adresse par employé — ce sont celles que les QR ouvrent
+### Une adresse par employé - ce sont celles que les QR ouvrent
 
 | Personne | Fonction | Adresse |
 | --- | --- | --- |
@@ -32,7 +32,7 @@ Le site est publié à la racine du dépôt, depuis la branche `main` :
 | Jean-Michel GAISNON | Responsable Atelier, Production Moteurs | <https://graffeuille.github.io/CDV/equipe/jean-michel-gaisnon/> |
 | Loïc BERNARD | Responsable Atelier, Production Moteurs | <https://graffeuille.github.io/CDV/equipe/loic-bernard/> |
 
-Le site est `www.graffeuille.fr` pour toute l'équipe.
+Le site est `www.graffeuille.com` pour toute l'équipe.
 
 ### Les autres adresses
 
@@ -63,7 +63,7 @@ mise en page n'oblige jamais à y repasser.
 ### Ajouter un employé
 
 1. Dupliquer `equipe/_modele/`, le renommer `prenom-nom` (sans accent, sans
-   espace ni majuscule — c'est ce nom qui devient l'adresse).
+   espace ni majuscule - c'est ce nom qui devient l'adresse).
 2. Remplir `carte.json` dans le nouveau dossier.
 3. Pour une photo : la déposer dans le dossier et écrire son nom de fichier
    dans `"photo"`. Laisser `""` s'il n'y en a pas.
@@ -92,7 +92,7 @@ Tout champ absent ou vide reprend la valeur commune définie en tête de
 
 La page relit le fichier à chaque ouverture : en local, un simple
 rafraîchissement suffit. Sur GitHub Pages, le réseau de diffusion peut servir
-l'ancienne version quelques minutes après le `git push` — c'est le délai de
+l'ancienne version quelques minutes après le `git push` - c'est le délai de
 publication, il n'y a rien à faire.
 
 ## Pourquoi le QR ne contient pas les coordonnées
@@ -128,7 +128,7 @@ qui décrit la page.
 
 C'est fait : `Settings → Pages`, « Deploy from a branch », branche `main`,
 dossier racine. Il n'y a rien à compiler. Le fichier `.nojekyll` à la racine
-demande à GitHub de servir les fichiers tels quels — sans lui, tout dossier
+demande à GitHub de servir les fichiers tels quels - sans lui, tout dossier
 commençant par un tiret bas, dont `equipe/_modele/`, serait écarté du site.
 
 Pour travailler en local :

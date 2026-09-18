@@ -1,4 +1,4 @@
-// contact.js — modèle de données de la page publique : valeurs par défaut,
+// contact.js - modèle de données de la page publique : valeurs par défaut,
 // fiche vCard, et lecture des coordonnées glissées dans l'adresse.
 
 window.Contact = (function () {
@@ -14,14 +14,14 @@ window.Contact = (function () {
     phone: '06 42 97 36 94',
     email: 'jerome@graffeuille.com',
     email2: '',
-    website: 'www.graffeuille.fr',
+    website: 'www.graffeuille.com',
     linkedin: 'https://fr.linkedin.com/company/ets-graffeuille-sas',
     company: 'GRAFFEUILLE',
     street: '120, route de Saint-Jean d’Angély',
     postalCode: '16170',
     city: 'Rouillac',
     country: 'France',
-    tagline: 'Reconditionnement de moteurs,\nde boîtes de vitesses et de ponts.',
+    tagline: 'Reconditionnement moteurs,\nboîtes de vitesses et ponts.',
     showBaseline: true,
     accent: '#e63329',
     photo: ''
@@ -106,7 +106,7 @@ window.Contact = (function () {
       'FN:' + [d.firstName, d.lastName].filter(Boolean).join(' ')
     ];
     if (d.company) lines.push('ORG:' + d.company);
-    var title = [d.role, d.department].filter(Boolean).join(' — ').split('\n').join(' ');
+    var title = [d.role, d.department].filter(Boolean).join(' - ').split('\n').join(' ');
     if (title) lines.push('TITLE:' + title);
     if (d.phone) lines.push('TEL;TYPE=' + telType(d.phone) + ':' + e164(d.phone));
     if (d.street || d.city) {

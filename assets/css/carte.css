@@ -1,4 +1,4 @@
-/* carte.css — page publique de la carte de visite, pensée pour un téléphone
+/* carte.css - page publique de la carte de visite, pensée pour un téléphone
  * qui vient de scanner le QR code du dos de la carte imprimée. */
 
 :root {
@@ -78,6 +78,10 @@ body {
   background: var(--accent);
   color: var(--on-accent);
   padding: 30px 24px 26px;
+
+  /* Le logo et l'accroche partagent cette largeur : leurs bords droits
+   * tombent ainsi exactement l'un sous l'autre. */
+  --crest-block: min(172px, 62%);
 }
 
 /* Le portrait remonte de 74 px dans le bandeau : sans réserve en pied, il
@@ -93,14 +97,18 @@ body {
   pointer-events: none;
 }
 
-.crest-logo { position: relative; display: block; width: 172px; max-width: 62%; }
+.crest-logo { position: relative; display: block; width: var(--crest-block); }
 
 .crest-pitch {
   position: relative;
   margin: 20px 0 0;
-  max-width: 30ch;
-  font-size: 14px;
-  line-height: 1.45;
+  width: var(--crest-block);
+  /* Calé pour que chaque ligne de l'accroche tienne dans la largeur du logo
+   * sans se replier. Le repli par vw ne joue qu'en dessous de 333 px de large,
+   * là où le bandeau lui-même rétrécit ; au-delà la taille reste fixe. */
+  font-size: min(12.5px, 3.75vw);
+  line-height: 1.5;
+  text-align: right;
   color: rgba(255, 255, 255, .92);
   white-space: pre-line;
 }
