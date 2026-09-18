@@ -1,5 +1,5 @@
 /*!
- * logo.js — tracés vectoriels de l'identité GRAFFEUILLE / TURGIS GAILLARD :
+ * logo.js - tracés vectoriels de l'identité GRAFFEUILLE / TURGIS GAILLARD :
  * le symbole, le nom et la signature, dessinés dans un même repère.
  */
 window.LOGO = {
