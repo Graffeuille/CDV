@@ -40,24 +40,23 @@ Le site est `www.graffeuille.com` pour toute l'équipe.
 | --- | --- |
 | <https://graffeuille.github.io/CDV/> | Entrée de secours. Sans rien après le `#`, elle affiche la carte de Jérôme Goumard. |
 | <https://graffeuille.github.io/CDV/#loic-bernard> | Ancienne forme par identifiant, toujours acceptée pour ne pas invalider un QR déjà imprimé. |
-| <https://graffeuille.github.io/CDV/#c=…> | Ancienne forme portant les coordonnées elles-mêmes. Toujours lue, mais plus produite. |
 | <https://graffeuille.github.io/CDV/equipe/sarah-fossard/carte.json> | La fiche brute, telle que la page la lit. |
 
 ## Un dossier par personne
 
 ```
 equipe/
-  _modele/                 ← à dupliquer pour ajouter quelqu'un
-    index.html             ← identique partout, jamais à modifier
-    carte.json             ← les coordonnées
-    portrait.svg           ← les fichiers propres à la personne
+  _modele/                 <- à dupliquer pour ajouter quelqu'un
+    index.html             <- identique partout, jamais à modifier
+    carte.json             <- les coordonnées
+    portrait.svg           <- les fichiers propres à la personne
   jerome-goumard/
     index.html
     carte.json
 ```
 
-`index.html` ne contient qu'une ligne utile : il désigne `carte.json` et charge
-le code commun. Il est donc identique dans tous les dossiers, et refaire la
+`index.html` ne contient qu'une chose utile : l'attribut `data-carte` qui
+désigne `carte.json`, et les quatre scripts communs. Il est donc identique dans tous les dossiers, et refaire la
 mise en page n'oblige jamais à y repasser.
 
 ### Ajouter un employé
@@ -101,8 +100,45 @@ Il ne porte que **l'adresse de la page**. La différence compte : corriger un
 numéro sur le site met à jour toutes les cartes déjà distribuées, alors qu'un
 QR contenant une vCard fige les coordonnées dans l'encre.
 
-L'adresse `…/equipe/prenom-nom/` fait 77 caractères : le QR tombe en version 5,
+L'adresse `.../equipe/prenom-nom/` fait 77 caractères : le QR tombe en version 5,
 ses modules mesurent 0,54 mm imprimés à 24 mm, il se scanne sans effort.
+
+## Qui peut modifier les cartes
+
+Le site est un ensemble de fichiers figés : il n'a ni serveur, ni base de
+données, ni formulaire. **Une personne extérieure ne peut donc rien modifier.**
+Les coordonnées ne changent que si quelqu'un modifie un `carte.json` dans ce
+dépôt, et cela demande un droit d'écriture sur le dépôt GitHub.
+
+Le dépôt est public, comme l'exigent les GitHub Pages gratuites : tout le monde
+peut donc *lire* le code et les fiches. C'est sans conséquence, ce sont les
+mêmes coordonnées que sur la carte imprimée.
+
+Ce que le code interdit :
+
+- **Fabriquer une fausse carte à notre adresse.** La page n'accepte après le `#`
+  qu'un identifiant de dossier existant. Impossible d'écrire une adresse qui
+  afficherait un faux nom ou un faux numéro sur `graffeuille.github.io`.
+- **Sortir du dossier `equipe/`.** L'identifiant est limité aux lettres, aux
+  chiffres et au tiret : ni point, ni barre oblique.
+- **Injecter du code dans la page.** Tout texte affiché est échappé, et une
+  règle `Content-Security-Policy` n'autorise que les scripts, styles, fontes et
+  images du site lui-même. Aucun script en ligne, aucun appel extérieur.
+
+À faire côté GitHub, une fois pour toutes :
+
+1. `Settings -> Collaborators` : n'y laisser que les personnes qui doivent
+   vraiment pouvoir modifier les cartes.
+2. Activer l'authentification à deux facteurs sur ces comptes. C'est le vrai
+   point d'entrée : qui prend la main sur le compte prend la main sur les
+   cartes.
+3. `Settings -> Branches` : protéger `main` pour empêcher un envoi direct et une
+   réécriture de l'historique.
+
+Une limite subsiste, qu'aucun code ne peut lever ici : GitHub Pages ne permet
+pas d'envoyer d'en-têtes HTTP. La page ne peut donc pas s'interdire d'être
+affichée dans le cadre d'un autre site. Il faudrait pour cela un hébergement
+qui sache poser un en-tête `X-Frame-Options`.
 
 ## Organisation du code
 
@@ -126,7 +162,7 @@ qui décrit la page.
 
 ## Mise en ligne
 
-C'est fait : `Settings → Pages`, « Deploy from a branch », branche `main`,
+C'est fait : `Settings -> Pages`, « Deploy from a branch », branche `main`,
 dossier racine. Il n'y a rien à compiler. Le fichier `.nojekyll` à la racine
 demande à GitHub de servir les fichiers tels quels - sans lui, tout dossier
 commençant par un tiret bas, dont `equipe/_modele/`, serait écarté du site.

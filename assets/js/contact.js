@@ -1,11 +1,10 @@
-// contact.js - modèle de données de la page publique : valeurs par défaut,
-// fiche vCard, et lecture des coordonnées glissées dans l'adresse.
+// Les données de la carte : valeurs communes, fiche vCard, lecture de l'adresse.
 
 window.Contact = (function () {
   'use strict';
 
-  // Coordonnées communes à toute l'entreprise : une fiche carte.json ne
-  // renseigne que ce qui lui est propre, le reste vient d'ici.
+  // Valeurs communes à toute l'équipe. Une fiche ne renseigne que ce qui lui
+  // est propre ; le reste vient d'ici.
   var DEFAULTS = {
     firstName: 'Jérôme',
     lastName: 'Goumard',
@@ -29,49 +28,45 @@ window.Contact = (function () {
 
   var BOOLEANS = ['showBaseline'];
 
-  // Ordre des champs dans la charge compacte des anciennes adresses « #c= ».
-  // Cet ordre est un format de données : ne jamais le modifier, sous peine de
-  // rendre illisibles les QR codes déjà imprimés.
-  var PACKED = ['firstName', 'lastName', 'role', 'phone', 'email', 'website',
-                'company', 'street', 'postalCode', 'city', 'country',
-                'tagline', 'accent',
-                'email2', 'department', 'linkedin'];
-
+  // Complète une fiche avec les valeurs communes.
   function normalise(d) {
     var out = Object.assign({}, DEFAULTS, d || {});
     BOOLEANS.forEach(function (k) { out[k] = !!out[k]; });
     return out;
   }
 
+  // Prénom et NOM.
   function fullName(d) {
     return [d.firstName, (d.lastName || '').toUpperCase()].filter(Boolean).join(' ');
   }
 
+  // Nom de fichier sans accent ni espace.
   function slugify(str) {
     return String(str || '')
-      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .normalize('NFD').replace(/[̀-ͯ]/g, '')
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/^-|-$/g, '');
   }
 
+  // Code postal, ville et pays.
   function cityLine(d) {
     var line = [d.postalCode, d.city].filter(Boolean).join(' ');
     return (line + (d.country ? ' - ' + d.country : '')).trim();
   }
 
-  // Adresse sur une ligne, pour un lien vers une application de cartographie.
+  // L'adresse sur une ligne, pour l'itinéraire.
   function addressQuery(d) {
     return [d.street, d.postalCode, d.city, d.country].filter(Boolean).join(', ');
   }
 
-  // Adresse du site.
+  // Le lien du site.
   function websiteUrl(d) {
     if (!d.website) return '';
     return /^https?:\/\//i.test(d.website) ? d.website : 'https://' + d.website;
   }
 
-  // Adresse du profil LinkedIn.
+  // Le lien LinkedIn.
   function linkedinUrl(d) {
     var v = String(d.linkedin || '').trim().replace(/\/+$/, '');
     if (!v) return '';
@@ -80,24 +75,26 @@ window.Contact = (function () {
     return 'https://www.linkedin.com/in/' + v.replace(/^\/+/, '');
   }
 
+  // Les courriels renseignés.
   function emails(d) {
     return [d.email, d.email2].filter(Boolean);
   }
 
-  // Numéro au format international E.164.
+  // Le numéro au format international.
   function e164(phone) {
-    var raw = String(phone || '').replace(/[\s.\-()\u00a0]/g, '');
+    var raw = String(phone || '').replace(/[\s.\-() ]/g, '');
     if (raw.charAt(0) === '+') return raw;
     if (raw.slice(0, 2) === '00') return '+' + raw.slice(2);
-    // Plan de numérotation français : un 0 suivi de neuf chiffres.
     if (/^0\d{9}$/.test(raw)) return '+33' + raw.slice(1);
     return raw;
   }
 
+  // Mobile ou fixe.
   function telType(phone) {
     return /^\+33[67]/.test(e164(phone)) ? 'CELL,WORK' : 'WORK,VOICE';
   }
 
+  // La fiche à ajouter aux contacts.
   function vcard(d) {
     var lines = [
       'BEGIN:VCARD',
@@ -121,44 +118,13 @@ window.Contact = (function () {
     return lines.join('\r\n');
   }
 
-  /* ------------------------------------------- coordonnées dans l'adresse */
-
-  function b64decode(str) {
-    var b64 = str.replace(/-/g, '+').replace(/_/g, '/');
-    while (b64.length % 4) b64 += '=';
-    var bin = atob(b64), bytes = new Uint8Array(bin.length);
-    for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
-    // « fatal » : un lien tronqué doit échouer franchement plutôt que de
-    // produire des caractères de remplacement et une carte de charabia.
-    return new TextDecoder('utf-8', { fatal: true }).decode(bytes);
-  }
-
-  // Décode la charge compacte des anciens QR codes « #c=… ».
-  function unpack(str) {
-    if (!/^[A-Za-z0-9_-]+$/.test(str)) return null;
-    var parts;
-    try {
-      parts = b64decode(str).split('~');
-    } catch (e) { return null; }
-    // Une charge valide commence toujours par une identité.
-    if (!parts[0] && !parts[1]) return null;
-    var d = {};
-    PACKED.forEach(function (k, i) {
-      if (parts[i]) d[k] = parts[i];
-    });
-    return normalise(d);
-  }
-
-  // Lit le fragment d'adresse : identifiant de personne, ou coordonnées.
-  function readFragment(hash) {
+  // L'identifiant écrit après le #. Vide si absent, null s'il est invalide.
+  // Seul un identifiant de dossier est accepté : la page ne peut donc afficher
+  // que des fiches versionnées dans le dépôt.
+  function readSlug(hash) {
     var frag = String(hash || '').replace(/^#/, '');
-    if (!frag) return { kind: 'default' };
-    if (frag.indexOf('c=') === 0) {
-      var d = unpack(frag.slice(2));
-      return d ? { kind: 'inline', data: d } : { kind: 'invalid' };
-    }
-    if (/^[a-z0-9-]{1,64}$/i.test(frag)) return { kind: 'slug', slug: frag };
-    return { kind: 'invalid' };
+    if (!frag) return '';
+    return /^[a-z0-9-]{1,64}$/i.test(frag) ? frag.toLowerCase() : null;
   }
 
   return {
@@ -167,6 +133,6 @@ window.Contact = (function () {
     cityLine: cityLine, addressQuery: addressQuery,
     websiteUrl: websiteUrl, linkedinUrl: linkedinUrl,
     emails: emails, e164: e164, telType: telType, vcard: vcard,
-    unpack: unpack, readFragment: readFragment
+    readSlug: readSlug
   };
 }());

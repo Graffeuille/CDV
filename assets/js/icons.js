@@ -1,4 +1,4 @@
-// icons.js - pictogrammes de la carte.
+// Les pictogrammes des lignes de contact.
 
 window.Icons = (function () {
   'use strict';
@@ -25,7 +25,7 @@ window.Icons = (function () {
             box: [176, 88, 848, 760] }
   };
 
-  // Dessine un tracé, plein ou au filet.
+  // Le tracé, plein ou au filet.
   function paint(name, color) {
     var g = GLYPHS[name];
     if (!g.stroke) return '<path d="' + g.d + '" fill="' + color + '"/>';
@@ -33,7 +33,7 @@ window.Icons = (function () {
          + g.stroke + '" stroke-linecap="round"/>';
   }
 
-  // Carré autonome, dimensionné en pixels.
+  // Le pictogramme, en pixels.
   function inline(name, size, cls) {
     var b = GLYPHS[name].box;
     var w = b[2] - b[0], h = b[3] - b[1], side = Math.max(w, h);

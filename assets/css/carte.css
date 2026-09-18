@@ -1,5 +1,4 @@
-/* carte.css - page publique de la carte de visite, pensée pour un téléphone
- * qui vient de scanner le QR code du dos de la carte imprimée. */
+/* La carte de visite en ligne. */
 
 :root {
   color-scheme: light;
@@ -7,8 +6,7 @@
   --accent-deep: #b81f17;
   --on-accent: #ffffff;
 
-  /* Neutres très légèrement tirés vers le rouge de la marque, pour qu'ils
-   * s'accordent à l'aplat du bandeau plutôt que de jurer avec lui. */
+  /* Neutres tirés vers le rouge de la marque. */
   --ground: #f6f3f2;
   --surface: #ffffff;
   --surface-2: #faf8f7;
@@ -45,8 +43,7 @@
 
 * { box-sizing: border-box; }
 
-/* .sheet impose un display : il faut le neutraliser explicitement,
- * sinon l'attribut hidden reste sans effet. */
+/* .sheet impose un display : sans ceci, hidden reste sans effet. */
 [hidden] { display: none !important; }
 
 body {
@@ -68,9 +65,7 @@ body {
   flex-direction: column;
 }
 
-/* ------------------------------------------------------------------ bandeau
- * Reprend le recto imprimé : aplat rouge, logo, accroche, et le symbole
- * détouré en filigrane comme au verso de la carte. */
+/* ----------------------------------------------------------------- bandeau */
 
 .crest {
   position: relative;
@@ -79,13 +74,11 @@ body {
   color: var(--on-accent);
   padding: 30px 24px 26px;
 
-  /* Le logo et l'accroche partagent cette largeur : leurs bords droits
-   * tombent ainsi exactement l'un sous l'autre. */
+  /* Largeur commune au logo et à l'accroche : bords droits alignés. */
   --crest-block: min(172px, 62%);
 }
 
-/* Le portrait remonte de 74 px dans le bandeau : sans réserve en pied, il
- * recouvrirait l'accroche. */
+/* Réserve en pied : le portrait remonte dans le bandeau. */
 .with-portrait .crest { padding-bottom: 88px; }
 
 .crest-watermark {
@@ -103,9 +96,7 @@ body {
   position: relative;
   margin: 20px 0 0;
   width: var(--crest-block);
-  /* Calé pour que chaque ligne de l'accroche tienne dans la largeur du logo
-   * sans se replier. Le repli par vw ne joue qu'en dessous de 333 px de large,
-   * là où le bandeau lui-même rétrécit ; au-delà la taille reste fixe. */
+  /* Calé pour que chaque ligne tienne dans la largeur du logo. */
   font-size: min(12.5px, 3.75vw);
   line-height: 1.5;
   text-align: right;
@@ -113,18 +104,14 @@ body {
   white-space: pre-line;
 }
 
-/* ----------------------------------------------------------------- identité
- * Le nom reprend littéralement le bandeau rouge du verso imprimé : c'est le
- * détail que reconnaît la personne qui vient de scanner la carte. */
+/* ---------------------------------------------------------------- identité */
 
 .identity { padding: 26px 24px 4px; }
 
-/* Portrait : un rectangle aux angles adoucis plutôt qu'un rond, plus proche
- * de la géométrie du logo que d'une photo de profil. Il chevauche le bandeau. */
+/* Portrait : il chevauche le bandeau. */
 .portrait {
   display: block;
-  /* .crest est en position relative : sans contexte propre, le portrait
-   * passerait dessous au lieu de le chevaucher. */
+  /* Sans contexte propre, il passerait sous le bandeau. */
   position: relative;
   z-index: 1;
   width: 96px; height: 96px;
@@ -161,7 +148,7 @@ body {
   font-style: italic;
   line-height: 1.35;
   color: var(--ink-muted);
-  /* Les fonctions tiennent parfois sur deux lignes, comme à l'impression. */
+  /* Les fonctions tiennent parfois sur deux lignes. */
   white-space: pre-line;
 }
 
