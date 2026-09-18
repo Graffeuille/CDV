@@ -16,5 +16,8 @@
   "tagline": "Reconditionnement moteurs,\nboîtes de vitesses et ponts.",
   "showBaseline": true,
   "accent": "#e63329",
-  "photo": "portrait.svg"
+  "photo": "portrait.svg",
+  "en": {
+    "role": "Job title"
+  }
 }

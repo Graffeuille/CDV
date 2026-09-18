@@ -4,6 +4,26 @@
   // La carte affichée quand l'adresse ne désigne personne.
   var DEFAULT_SLUG = 'jerome-goumard';
 
+  var CLE_LANGUE = 'carte-langue';
+  var langue = 'fr';
+  var ficheCourante = null;
+
+  // Le choix de langue est propre au téléphone qui consulte la carte.
+  function lireLangue() {
+    try {
+      var v = localStorage.getItem(CLE_LANGUE);
+      if (v === 'fr' || v === 'en') return v;
+    } catch (e) { /* stockage indisponible */ }
+    return 'fr';
+  }
+
+  function ecrireLangue(v) {
+    try { localStorage.setItem(CLE_LANGUE, v); } catch (e) { /* sans effet */ }
+  }
+
+  // Les textes de la langue courante.
+  function t() { return I18N[langue]; }
+
   var CHEVRON = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" '
               + 'focusable="false"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" '
               + 'stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
@@ -20,16 +40,19 @@
     var root = document.createElement('div');
     root.innerHTML =
         '<main class="sheet" id="card" hidden>'
-      +   '<header class="crest" id="crest"></header>'
+      +   '<header class="crest">'
+      +     '<div id="crest-content"></div>'
+      +     '<button type="button" class="lang" id="btn-lang"></button>'
+      +   '</header>'
       +   '<section class="identity" id="identity"></section>'
-      +   '<nav class="links" id="links" aria-label="Coordonnées"></nav>'
+      +   '<nav class="links" id="links"></nav>'
       +   '<div class="actions">'
       +     '<a class="cta" id="btn-vcf" href="#">Ajouter à mes contacts</a>'
       +     '<button type="button" class="secondary" id="btn-share">Partager cette carte</button>'
       +   '</div>'
       + '</main>'
       + '<section class="sheet missing" id="missing" hidden>'
-      +   '<h1>Carte introuvable</h1><p id="missing-text"></p>'
+      +   '<h1 id="missing-title"></h1><p id="missing-text"></p>'
       + '</section>'
       + '<div class="toast" id="toast" role="status" aria-live="polite"></div>';
     while (root.firstChild) document.body.appendChild(root.firstChild);
@@ -41,7 +64,7 @@
 
   function renderCrest(d) {
     var pitch = String(d.tagline || '').trim();
-    $('#crest').innerHTML =
+    $('#crest-content').innerHTML =
         '<svg class="crest-watermark" viewBox="3.75 22.76 21.04 17.88" aria-hidden="true">'
       +   '<path d="' + LOGO.mark + '" fill="none" stroke="#fff" stroke-width="0.35"/>'
       + '</svg>'
@@ -78,23 +101,23 @@
     var out = [];
 
     if (d.phone) {
-      out.push(row('phone', 'Téléphone', d.phone, 'tel:' + Contact.e164(d.phone)));
+      out.push(row('phone', t().phone, d.phone, 'tel:' + Contact.e164(d.phone)));
     }
 
     Contact.emails(d).forEach(function (address, i) {
-      out.push(row('mail', i === 0 ? 'Courriel' : 'Autre courriel',
+      out.push(row('mail', i === 0 ? t().mail : t().mail2,
                    address, 'mailto:' + address));
     });
 
     if (d.website) {
-      out.push(row('globe', 'Site internet', d.website, Contact.websiteUrl(d),
+      out.push(row('globe', t().web, d.website, Contact.websiteUrl(d),
                    ' target="_blank" rel="noopener"'));
     }
 
     if (d.linkedin) {
       var li = Contact.linkedinUrl(d);
       var isCompany = /\/company\//i.test(li);
-      out.push(row('linkedin', 'LinkedIn',
+      out.push(row('linkedin', t().linkedin,
                    isCompany && d.company ? d.company
                      : li.replace(/^https?:\/\/(www\.)?/i, ''),
                    li, ' target="_blank" rel="noopener"'));
@@ -102,17 +125,22 @@
 
     var address = Contact.addressQuery(d);
     if (address) {
-      out.push(row('pin', 'Adresse',
+      out.push(row('pin', t().address,
                    [d.street, Contact.cityLine(d)].filter(Boolean).join(', '),
                    'https://www.google.com/maps/search/?api=1&query='
                      + encodeURIComponent(address),
                    ' target="_blank" rel="noopener"'));
     }
 
+    $('#links').setAttribute('aria-label', t().coordonnees);
     $('#links').innerHTML = out.join('');
   }
 
-  function render(d) {
+  function render(fiche) {
+    ficheCourante = fiche;
+    var d = Contact.localise(fiche, langue);
+
+    document.documentElement.lang = langue;
     document.title = Contact.fullName(d) + ' - ' + (d.company || 'GRAFFEUILLE');
     var accent = d.accent || Contact.DEFAULTS.accent;
     document.documentElement.style.setProperty('--accent', accent);
@@ -122,16 +150,34 @@
     renderCrest(d);
     renderIdentity(d);
     renderLinks(d);
+    renderLangue();
     $('#card').classList.toggle('with-portrait', !!d.photoUrl);
     $('#card').hidden = false;
     $('#missing').hidden = true;
     wireActions(d);
   }
 
-  function showMissing(message) {
+  // Le bouton de langue : il porte la langue affichée, et bascule vers l'autre.
+  function renderLangue() {
+    var b = $('#btn-lang');
+    b.textContent = t().code;
+    b.setAttribute('aria-label', t().bascule);
+    b.title = t().bascule;
+  }
+
+  function basculerLangue() {
+    langue = langue === 'fr' ? 'en' : 'fr';
+    ecrireLangue(langue);
+    if (ficheCourante) render(ficheCourante);
+    else start();
+  }
+
+  function showMissing(cle) {
     $('#card').hidden = true;
     $('#missing').hidden = false;
-    $('#missing-text').textContent = message;
+    $('#missing-title').textContent = t().absenteTitre;
+    $('#missing-text').textContent = t()[cle];
+    document.documentElement.lang = langue;
   }
 
   /* ---------------------------------------------------------------- actions */
@@ -154,8 +200,10 @@
     vcf.href = url;
     vcf.dataset.url = url;
     vcf.download = (Contact.slugify(Contact.fullName(d)) || 'contact') + '.vcf';
+    vcf.textContent = t().vcf;
 
     var share = $('#btn-share');
+    share.textContent = t().share;
     if (shareHandler) share.removeEventListener('click', shareHandler);
     shareHandler = function () {
       var payload = {
@@ -167,10 +215,10 @@
         navigator.share(payload).catch(function () { /* partage annulé */ });
       } else if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(location.href).then(
-          function () { toast('Lien copié.'); },
-          function () { window.prompt('Lien de la carte :', location.href); });
+          function () { toast(t().copie); },
+          function () { window.prompt(t().lien, location.href); });
       } else {
-        window.prompt('Lien de la carte :', location.href);
+        window.prompt(t().lien, location.href);
       }
     };
     share.addEventListener('click', shareHandler);
@@ -200,24 +248,23 @@
     var own = document.body.getAttribute('data-carte');
     if (own) {
       return loadJson(own).then(render, function () {
-        showMissing('La fiche de ce dossier est absente ou illisible.');
+        showMissing('absenteFiche');
       });
     }
 
     var slug = Contact.readSlug(location.hash);
-    if (slug === null) {
-      return showMissing('Ce lien est incomplet ou abîmé. Scannez de nouveau le '
-        + 'QR code au dos de la carte.');
-    }
+    if (slug === null) return showMissing('absenteLien');
 
     loadSlug(slug || DEFAULT_SLUG).then(render, function () {
-      showMissing('Aucune carte ne correspond à ce lien. Vérifiez l’adresse ou '
-        + 'scannez de nouveau le QR code au dos de la carte.');
+      showMissing('absenteCarte');
     });
   }
 
   function boot() {
+    langue = lireLangue();
     scaffold();
+    renderLangue();
+    $('#btn-lang').addEventListener('click', basculerLangue);
     start();
     if (!document.body.hasAttribute('data-carte')) {
       window.addEventListener('hashchange', start);

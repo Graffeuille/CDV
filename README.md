@@ -69,6 +69,26 @@ mise en page n'oblige jamais à y repasser.
 4. Le QR de la carte imprimée doit pointer vers
    `https://graffeuille.github.io/CDV/equipe/prenom-nom/`.
 
+### Français et anglais
+
+Un bouton en haut à droite du bandeau bascule la carte en anglais : les
+libellés, les boutons, la fonction, le service, l'accroche et la fiche vCard
+téléchargée. Le choix est retenu sur le téléphone qui consulte la carte ; il ne
+change rien pour les autres.
+
+Les textes de l'interface sont dans `assets/js/i18n.js`. Les traductions
+propres à une personne vivent dans son `carte.json`, sous `en` :
+
+```json
+"en": {
+  "role": "Sales Manager",
+  "department": "Gearboxes / Axles"
+}
+```
+
+Seuls les champs traduits ont besoin d'y figurer ; les autres restent en
+français. L'accroche anglaise est commune à toute l'équipe, dans `contact.js`.
+
 ### Les champs de `carte.json`
 
 Tout champ absent ou vide reprend la valeur commune définie en tête de
@@ -86,6 +106,7 @@ Tout champ absent ou vide reprend la valeur commune définie en tête de
 | `showBaseline` | `false` masque la signature « TURGIS GAILLARD » sous le logo. |
 | `accent` | La couleur de la page, `#e63329` par défaut. |
 | `photo` | Nom d'un fichier image du dossier, ou `""`. |
+| `en` | Les champs traduits en anglais. Voir plus haut. |
 
 ### Après une modification de `carte.json`
 
@@ -147,6 +168,7 @@ index.html              entrée de secours, pilotée par ce qui suit le #
 equipe/<personne>/      un dossier par employé : carte.json, photo, index.html
 equipe/_modele/         gabarit à dupliquer
 
+assets/js/i18n.js       les textes de l'interface, en français et en anglais
 assets/js/contact.js    les données : valeurs communes, vCard, lecture du #
 assets/js/carte.js      la page : elle construit tout le gabarit
 assets/js/icons.js      les pictogrammes des lignes de contact
