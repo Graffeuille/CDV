@@ -7,7 +7,6 @@
   "email": "fabrice@graffeuille.com",
   "email2": "",
   "website": "www.graffeuille.fr",
-  "websiteInContacts": false,
   "linkedin": "https://fr.linkedin.com/company/ets-graffeuille-sas",
   "company": "GRAFFEUILLE",
   "street": "Rte de Saint-Jean d’Angély",
@@ -17,8 +16,5 @@
   "tagline": "Reconditionnement de moteurs,\nde boîtes de vitesses et de ponts.",
   "showBaseline": true,
   "accent": "#e63329",
-  "qrLevel": "M",
-  "watermark": true,
-  "slug": "fabrice-pellizotti",
   "photo": ""
 }

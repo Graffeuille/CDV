@@ -1,11 +1,8 @@
 (function () {
   'use strict';
 
+  // Carte affichée par index.html quand l'adresse ne désigne personne.
   var DEFAULT_SLUG = 'jerome-goumard';
-
-  // l'organisation actuelle ; le second garde valides les QR déjà imprimés.
-  
-  var LOOKUP = ['equipe/{slug}/carte.json', 'cartes/{slug}.json'];
 
   var CHEVRON = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" '
               + 'focusable="false"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" '
@@ -79,18 +76,22 @@
 
   function renderLinks(d) {
     var out = [];
+
     if (d.phone) {
       out.push(row('phone', 'Téléphone', d.phone, 'tel:' + Contact.e164(d.phone)));
     }
+
     Contact.emails(d).forEach(function (address, i) {
       out.push(row('mail', i === 0 ? 'Courriel' : 'Autre courriel',
                    address, 'mailto:' + address));
     });
+
     if (d.website) {
       out.push(row('globe', 'Site internet', d.website, Contact.websiteUrl(d),
                    ' target="_blank" rel="noopener"'));
-      
-     if (d.linkedin) {
+    }
+
+    if (d.linkedin) {
       var li = Contact.linkedinUrl(d);
       var isCompany = /\/company\//i.test(li);
       out.push(row('linkedin', 'LinkedIn',
@@ -98,6 +99,7 @@
                      : li.replace(/^https?:\/\/(www\.)?/i, ''),
                    li, ' target="_blank" rel="noopener"'));
     }
+
     var address = Contact.addressQuery(d);
     if (address) {
       out.push(row('pin', 'Adresse',
@@ -106,6 +108,7 @@
                      + encodeURIComponent(address),
                    ' target="_blank" rel="noopener"'));
     }
+
     $('#links').innerHTML = out.join('');
   }
 
@@ -187,12 +190,9 @@
     });
   }
 
-  /** Essaie chaque emplacement connu, dans l'ordre, pour un identifiant. */
+  /** Fiche d'une personne, à partir de son identifiant de dossier. */
   function loadSlug(slug) {
-    var attempts = LOOKUP.map(function (tpl) { return tpl.replace('{slug}', slug); });
-    return attempts.reduce(function (chain, path) {
-      return chain.catch(function () { return loadJson(path); });
-    }, Promise.reject());
+    return loadJson('equipe/' + slug + '/carte.json');
   }
 
   function start() {
