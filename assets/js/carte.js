@@ -89,6 +89,14 @@
     if (d.website) {
       out.push(row('globe', 'Site internet', d.website, Contact.websiteUrl(d),
                    ' target="_blank" rel="noopener"'));
+      
+     if (d.linkedin) {
+      var li = Contact.linkedinUrl(d);
+      var isCompany = /\/company\//i.test(li);
+      out.push(row('linkedin', 'LinkedIn',
+                   isCompany && d.company ? d.company
+                     : li.replace(/^https?:\/\/(www\.)?/i, ''),
+                   li, ' target="_blank" rel="noopener"'));
     }
     var address = Contact.addressQuery(d);
     if (address) {
