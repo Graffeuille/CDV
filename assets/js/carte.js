@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  // Carte affichée par index.html quand l'adresse ne désigne personne.
+  // La carte affichée quand l'adresse ne désigne personne.
   var DEFAULT_SLUG = 'jerome-goumard';
 
   var CHEVRON = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" '
@@ -14,7 +14,7 @@
       .replace(/"/g, '&quot;');
   }
 
-  /* ------------------------------------------------------------- structure */
+  // Le gabarit de la page.
 
   function scaffold() {
     var root = document.createElement('div');
@@ -37,7 +37,7 @@
 
   var $ = function (s) { return document.querySelector(s); };
 
-  /* ------------------------------------------------------------------ rendu */
+  /* ---------------------------------------------------------------- rendu */
 
   function renderCrest(d) {
     var pitch = String(d.tagline || '').trim();
@@ -178,7 +178,7 @@
 
   /* ------------------------------------------------------------- chargement */
 
-  /** Charge une fiche et résout sa photo relativement au dossier de la fiche. */
+  // Charge une fiche.
   function loadJson(path) {
     return fetch(path, { cache: 'no-cache' }).then(function (r) {
       if (!r.ok) throw new Error(r.status + ' sur ' + path);
@@ -190,28 +190,27 @@
     });
   }
 
-  /** Fiche d'une personne, à partir de son identifiant de dossier. */
+  // Charge la fiche d'un dossier.
   function loadSlug(slug) {
     return loadJson('equipe/' + slug + '/carte.json');
   }
 
   function start() {
-    var configured = window.CARTE && window.CARTE.source;
-    if (configured) {
-      return loadJson(configured).then(render, function () {
-        showMissing('La fiche de ce dossier est absente ou illisible '
-          + '(' + configured + ').');
+    // Une page de dossier désigne sa fiche ; la page d'accueil lit l'adresse.
+    var own = document.body.getAttribute('data-carte');
+    if (own) {
+      return loadJson(own).then(render, function () {
+        showMissing('La fiche de ce dossier est absente ou illisible.');
       });
     }
 
-    var frag = Contact.readFragment(location.hash);
-    if (frag.kind === 'inline') return render(frag.data);
-    if (frag.kind === 'invalid') {
+    var slug = Contact.readSlug(location.hash);
+    if (slug === null) {
       return showMissing('Ce lien est incomplet ou abîmé. Scannez de nouveau le '
         + 'QR code au dos de la carte.');
     }
 
-    loadSlug(frag.kind === 'slug' ? frag.slug : DEFAULT_SLUG).then(render, function () {
+    loadSlug(slug || DEFAULT_SLUG).then(render, function () {
       showMissing('Aucune carte ne correspond à ce lien. Vérifiez l’adresse ou '
         + 'scannez de nouveau le QR code au dos de la carte.');
     });
@@ -220,8 +219,7 @@
   function boot() {
     scaffold();
     start();
-    // Seules les pages pilotées par le fragment réagissent à sa modification.
-    if (!(window.CARTE && window.CARTE.source)) {
+    if (!document.body.hasAttribute('data-carte')) {
       window.addEventListener('hashchange', start);
     }
   }
