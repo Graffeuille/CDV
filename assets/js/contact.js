@@ -1,11 +1,10 @@
-/*!
- * contact.js — modèle de données partagé par la page publique et l'éditeur :
- * valeurs par défaut, fiche vCard, et encodage compact pour l'URL du QR code.
- */
+// contact.js - modèle de données partagé par la page publique. valeurs par défaut, fiche vCard, et encodage compact pour l'URL du QR code.
+
 window.Contact = (function () {
   'use strict';
 
   // Coordonnées de la carte d'origine, servant aussi de modèle de départ.
+  
   var DEFAULTS = {
     firstName: 'Jérôme',
     lastName: 'Goumard',
@@ -16,6 +15,7 @@ window.Contact = (function () {
     email2: '',
     website: 'www.graffeuille.fr',
     websiteInContacts: false,
+    linkedin: 'https://fr.linkedin.com/company/ets-graffeuille-sas',
     company: 'GRAFFEUILLE',
     street: '120, route de Saint-Jean d’Angély',
     postalCode: '16170',
@@ -34,17 +34,14 @@ window.Contact = (function () {
   var FIELDS = Object.keys(DEFAULTS);
   var CHECKBOXES = ['websiteInContacts', 'showBaseline', 'watermark', 'bleed'];
 
-  /**
-   * Ordre des champs dans la charge compacte glissée dans l'URL.
-   * Cet ordre est un format de données : il ne doit pas changer, sous peine
-   * de rendre illisibles les QR codes déjà imprimés.
-   */
+  // Ordre des champs dans la charge compacte glissée dans l'URL. Cet ordre est un format de données : il ne doit pas changer, sous peine de rendre illisibles les QR codes déjà imprimés.
+  
   var PACKED = ['firstName', 'lastName', 'role', 'phone', 'email', 'website',
                 'company', 'street', 'postalCode', 'city', 'country',
                 'tagline', 'accent',
-                // Ajouts ultérieurs : toujours en fin de liste, pour que les QR
-                // déjà imprimés continuent de se lire.
-                'email2', 'department'];
+                'email2', 'department', 'linkedin'];
+  
+  // Ajouts ultérieurs : toujours en fin de liste, pour que les QR déjà imprimés continuent de se lire.
 
   function normalise(d) {
     var out = Object.assign({}, DEFAULTS, d || {});
@@ -69,27 +66,32 @@ window.Contact = (function () {
     return (line + (d.country ? ' - ' + d.country : '')).trim();
   }
 
-  /** Adresse sur une ligne, pour un lien vers une application de cartographie. */
+  // Adresse sur une ligne, pour un lien vers une application de cartographie.
   function addressQuery(d) {
     return [d.street, d.postalCode, d.city, d.country].filter(Boolean).join(', ');
   }
 
-  /** Adresse du site, complétée du protocole si l'utilisateur l'a omis. */
+  // Adresse du site.
   function websiteUrl(d) {
     if (!d.website) return '';
     return /^https?:\/\//i.test(d.website) ? d.website : 'https://' + d.website;
   }
+  
+// Adresse du profil LinkedIn.
+  function linkedinUrl(d) {
+  var v = String(d.linkedin || '').trim().replace(/\/+$/, '');
+  if (!v) return '';
+  if (/^https?:\/\//i.test(v)) return v;
+  if (/^(www\.)?linkedin\.com\//i.test(v)) return 'https://www.' + v.replace(/^www\./i, '');
+  return 'https://www.linkedin.com/in/' + v.replace(/^\/+/, '');
+}
 
   function emails(d) {
     return [d.email, d.email2].filter(Boolean);
   }
 
-  /**
-   * Numéro au format international E.164, seul format qu'un téléphone sache
-   * reconnaître à coup sûr. Sans indicatif, « 05 45 96 44 78 » arrive dans le
-   * carnet d'adresses comme une suite de chiffres que l'appareil regroupe
-   * selon ses propres habitudes — d'où des « 054-596-4478 ».
-   */
+  // Numéro au format international E.164.
+  
   function e164(phone) {
     var raw = String(phone || '').replace(/[\s.\-()\u00a0]/g, '');
     if (raw.charAt(0) === '+') return raw;
@@ -99,11 +101,6 @@ window.Contact = (function () {
     return raw;
   }
 
-  /**
-   * Nature de la ligne, d'après le plan français : 06 et 07 sont des mobiles,
-   * le reste des postes fixes. Marquer un fixe « mobile » le rangerait au
-   * mauvais endroit dans le carnet d'adresses.
-   */
   function telType(phone) {
     var raw = e164(phone);
     return /^\+33[67]/.test(raw) ? 'CELL,WORK' : 'WORK,VOICE';
@@ -117,7 +114,6 @@ window.Contact = (function () {
       'FN:' + [d.firstName, d.lastName].filter(Boolean).join(' ')
     ];
     if (d.company) lines.push('ORG:' + d.company);
-    // TITLE ne tient que sur une ligne, là où la carte imprimée peut en avoir deux.
     var title = [d.role, d.department].filter(Boolean).join(' — ').split('\n').join(' ');
     if (title) lines.push('TITLE:' + title);
     if (d.phone) lines.push('TEL;TYPE=' + telType(d.phone) + ':' + e164(d.phone));
@@ -128,6 +124,7 @@ window.Contact = (function () {
     if (d.email) lines.push('EMAIL;TYPE=WORK,INTERNET:' + d.email);
     if (d.email2) lines.push('EMAIL;TYPE=WORK,INTERNET:' + d.email2);
     if (d.website) lines.push('URL:' + websiteUrl(d));
+    if (d.linkedin) lines.push('X-SOCIALPROFILE;TYPE=linkedin:' + linkedinUrl(d));
     lines.push('END:VCARD');
     return lines.join('\r\n');
   }
@@ -148,15 +145,15 @@ window.Contact = (function () {
     return new TextDecoder().decode(bytes);
   }
 
-  /**
-   * Charge compacte : les champs sont joints par « ~ », les valeurs identiques
-   * au modèle et les champs vides de fin sont omis. Ce format tient dans un QR
-   * bien plus petit qu'un JSON, ce qui compte pour un code imprimé à 24 mm.
-   */
+  var SHARED = ['accent', 'linkedin'];
+
+  // Charge compacte : Ce format tient dans un QR bien plus petit qu'un JSON, ce qui compte pour un code imprimé à 24 mm.
+  
   function pack(d) {
     var parts = PACKED.map(function (k) {
       var v = d[k] == null ? '' : String(d[k]);
-      if (k === 'accent' && v.toLowerCase() === DEFAULTS.accent) return '';
+      if (SHARED.indexOf(k) >= 0
+          && v.toLowerCase() === String(DEFAULTS[k]).toLowerCase()) return '';
       return v.replace(/~/g, '-');
     });
     while (parts.length && parts[parts.length - 1] === '') parts.pop();
@@ -174,19 +171,16 @@ window.Contact = (function () {
     } catch (e) { return null; }
   }
 
-  /**
-   * Adresse publique de la carte. Un identifiant court (« slug ») donne une
-   * URL courte, donc un QR peu dense et facile à scanner ; sans identifiant,
-   * les coordonnées voyagent dans l'URL elle-même, ce qui évite de déposer un
-   * fichier sur le site mais densifie le code.
-   */
+  // Adresse publique de la carte. Un identifiant court (« slug ») 
+  
   function cardUrl(base, d) {
     var root = String(base || '').replace(/(editeur\.html)?(#.*)?$/, '');
     if (!/\/$/.test(root)) root += '/';
     return d.slug ? root + 'equipe/' + d.slug + '/' : root + '#c=' + pack(d);
   }
 
-  /** Lit le fragment d'URL d'une page publique : identifiant ou coordonnées. */
+  // Lit le fragment d'URL d'une page publique : identifiant ou coordonnées.
+  
   function readFragment(hash) {
     var frag = String(hash || '').replace(/^#/, '');
     if (!frag) return { kind: 'default' };
@@ -202,6 +196,7 @@ window.Contact = (function () {
     DEFAULTS: DEFAULTS, FIELDS: FIELDS, CHECKBOXES: CHECKBOXES,
     normalise: normalise, fullName: fullName, slugify: slugify,
     cityLine: cityLine, addressQuery: addressQuery, websiteUrl: websiteUrl,
+    linkedinUrl: linkedinUrl,
     vcard: vcard, emails: emails, e164: e164, telType: telType,
     pack: pack, unpack: unpack,
     cardUrl: cardUrl, readFragment: readFragment
