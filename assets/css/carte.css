@@ -307,6 +307,7 @@ body {
 }
 .legal p { margin: 0 0 10px; font-size: 15px; line-height: 1.6; }
 .legal-date { color: var(--ink-muted); font-size: 13px; }
+.legal .nowrap { white-space: nowrap; }
 
 /* Les informations d'identification. Une grille plutôt qu'un flottant : un
  * terme sur deux lignes ne décale plus les lignes suivantes. */

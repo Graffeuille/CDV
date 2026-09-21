@@ -65,8 +65,11 @@ mise en page n'oblige jamais à y repasser.
 1. Dupliquer `equipe/_modele/`, le renommer `prenom-nom` (sans accent, sans
    espace ni majuscule - c'est ce nom qui devient l'adresse).
 2. Remplir `carte.json` dans le nouveau dossier.
-3. Pour une photo : la déposer dans le dossier et écrire son nom de fichier
-   dans `"photo"`. Laisser `""` s'il n'y en a pas.
+3. Pour une photo : **recueillir d'abord l'accord écrit de la personne**, puis
+   déposer le fichier dans le dossier et écrire son nom dans `"photo"`. Laisser
+   `""` s'il n'y en a pas. Publier le portrait de quelqu'un sans son accord
+   engage l'entreprise, au titre du droit à l'image ; les mentions légales
+   affirment que cet accord a été recueilli.
 4. Le QR de la carte imprimée doit pointer vers
    `https://graffeuille.github.io/CDV/equipe/prenom-nom/`.
 
