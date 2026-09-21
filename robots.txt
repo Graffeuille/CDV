@@ -3,5 +3,3 @@
 # imprimée. Les pages portent aussi une balise noindex.
 User-agent: *
 Disallow: /
-
-# Pas de sitemap : il servirait exactement à ce que cette règle interdit.
