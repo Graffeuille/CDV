@@ -306,6 +306,26 @@ body {
   color: var(--accent);
 }
 .legal p { margin: 0 0 10px; font-size: 15px; line-height: 1.6; }
+.legal-date { color: var(--ink-muted); font-size: 13px; }
+
+/* Les informations d'identification. Une grille plutôt qu'un flottant : un
+ * terme sur deux lignes ne décale plus les lignes suivantes. */
+.legal-list {
+  display: grid;
+  grid-template-columns: 11em 1fr;
+  gap: 8px 14px;
+  margin: 0 0 10px;
+  font-size: 15px;
+  line-height: 1.5;
+}
+.legal-list dt { color: var(--ink-muted); }
+.legal-list dd { margin: 0; }
+
+@media (max-width: 400px) {
+  .legal-list { grid-template-columns: 1fr; gap: 0; }
+  .legal-list dt { margin-top: 12px; font-size: 13px; }
+  .legal-list dt:first-child { margin-top: 0; }
+}
 .legal-note { color: var(--ink-muted); font-size: 13px; }
 
 .missing { padding: 40px 24px; }
