@@ -48,8 +48,9 @@
       +   '<nav class="links" id="links"></nav>'
       +   '<div class="actions">'
       +     '<a class="cta" id="btn-vcf" href="#">Ajouter à mes contacts</a>'
-      +     '<button type="button" class="secondary" id="btn-share">Partager cette carte</button>'
+      +     '<button type="button" class="secondary" id="btn-share"></button>'
       +   '</div>'
+      +   '<footer class="legal-link"><a id="lnk-legal" href="#"></a></footer>'
       + '</main>'
       + '<section class="sheet missing" id="missing" hidden>'
       +   '<h1 id="missing-title"></h1><p id="missing-text"></p>'
@@ -111,7 +112,7 @@
 
     if (d.website) {
       out.push(row('globe', t().web, d.website, Contact.websiteUrl(d),
-                   ' target="_blank" rel="noopener"'));
+                   ' target="_blank" rel="noopener noreferrer"'));
     }
 
     if (d.linkedin) {
@@ -120,7 +121,7 @@
       out.push(row('linkedin', t().linkedin,
                    isCompany && d.company ? d.company
                      : li.replace(/^https?:\/\/(www\.)?/i, ''),
-                   li, ' target="_blank" rel="noopener"'));
+                   li, ' target="_blank" rel="noopener noreferrer"'));
     }
 
     var address = Contact.addressQuery(d);
@@ -129,7 +130,7 @@
                    [d.street, Contact.cityLine(d)].filter(Boolean).join(', '),
                    'https://www.google.com/maps/search/?api=1&query='
                      + encodeURIComponent(address),
-                   ' target="_blank" rel="noopener"'));
+                   ' target="_blank" rel="noopener noreferrer"'));
     }
 
     $('#links').setAttribute('aria-label', t().coordonnees);
@@ -151,10 +152,19 @@
     renderIdentity(d);
     renderLinks(d);
     renderLangue();
+    renderLegal();
     $('#card').classList.toggle('with-portrait', !!d.photoUrl);
     $('#card').hidden = false;
     $('#missing').hidden = true;
     wireActions(d);
+  }
+
+  // Le lien légal, obligatoire et accessible depuis chaque carte.
+  function renderLegal() {
+    var a = $('#lnk-legal');
+    a.textContent = t().legal;
+    a.href = (document.body.hasAttribute('data-carte') ? '../../' : '')
+           + 'mentions-legales.html';
   }
 
   // Le bouton de langue : il porte la langue affichée, et bascule vers l'autre.

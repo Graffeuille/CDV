@@ -140,7 +140,7 @@ window.Contact = (function () {
     fullName: fullName, slugify: slugify,
     cityLine: cityLine, addressQuery: addressQuery,
     websiteUrl: websiteUrl, linkedinUrl: linkedinUrl,
-    emails: emails, e164: e164, telType: telType, vcard: vcard,
+    emails: emails, e164: e164, vcard: vcard,
     readSlug: readSlug
   };
 }());
