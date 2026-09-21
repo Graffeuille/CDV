@@ -24,7 +24,7 @@ window.Contact = (function () {
     showBaseline: true,
     accent: '#e63329',
     photo: '',
-    en: { tagline: 'Remanufacturing engines,\ngearboxes and axles.' }
+    en: { tagline: 'Engine, Gearbox & Axle Remanufacturing' }
   };
 
   var BOOLEANS = ['showBaseline'];
