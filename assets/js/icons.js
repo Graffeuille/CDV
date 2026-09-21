@@ -34,13 +34,12 @@ window.Icons = (function () {
   }
 
   // Le pictogramme, en pixels.
-  function inline(name, size, cls) {
+  function inline(name, size) {
     var b = GLYPHS[name].box;
     var w = b[2] - b[0], h = b[3] - b[1], side = Math.max(w, h);
     var ox = b[0] - (side - w) / 2, oy = -b[3] - (side - h) / 2;
     return '<svg viewBox="' + ox + ' ' + oy + ' ' + side + ' ' + side + '"'
          + ' width="' + size + '" height="' + size + '"'
-         + (cls ? ' class="' + cls + '"' : '')
          + ' aria-hidden="true" focusable="false">'
          + '<g transform="scale(1 -1)">' + paint(name, 'currentColor') + '</g></svg>';
   }

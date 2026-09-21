@@ -21,7 +21,8 @@ window.I18N = {
     absenteLien: 'Ce lien est incomplet ou abîmé. Scannez de nouveau le QR code '
                + 'au dos de la carte.',
     absenteCarte: 'Aucune carte ne correspond à ce lien. Vérifiez l’adresse ou '
-                + 'scannez de nouveau le QR code au dos de la carte.'
+                + 'scannez de nouveau le QR code au dos de la carte.',
+    legal: 'Mentions légales'
   },
   en: {
     code: 'EN',
@@ -43,6 +44,7 @@ window.I18N = {
     absenteLien: 'This link is incomplete or damaged. Please scan the QR code on '
                + 'the back of the card again.',
     absenteCarte: 'No card matches this link. Check the address, or scan the QR '
-                + 'code on the back of the card again.'
+                + 'code on the back of the card again.',
+    legal: 'Legal notice'
   }
 };

@@ -13,7 +13,6 @@
   --ink: #1b1513;
   --ink-muted: #6c615d;
   --hairline: #e7e0dd;
-  --ring: rgba(230, 51, 41, .35);
   --lift: 0 1px 2px rgba(27, 21, 19, .05), 0 10px 30px rgba(27, 21, 19, .08);
 }
 
@@ -282,9 +281,37 @@ body {
 }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
+/* Le lien légal, discret sous les boutons. */
+.legal-link { padding: 0 24px 26px; margin-top: -18px; text-align: center; }
+.legal-link a { color: var(--ink-muted); font-size: 13px; text-decoration: underline; }
+.legal-link a:hover { color: var(--ink); }
+
+/* Pages de texte : mentions légales, page introuvable. */
+.legal { padding: 32px 24px 8px; }
+.legal h1 {
+  font-family: 'Archivo', 'Inter', sans-serif;
+  font-size: 22px;
+  margin: 28px 0 4px;
+}
+.legal h1:first-child { margin-top: 0; }
+.legal .legal-part {
+  font-family: 'Archivo', 'Inter', sans-serif;
+  font-size: 22px;
+  color: var(--ink);
+  margin: 32px 0 4px;
+}
+.legal h2 {
+  font-size: 15px;
+  margin: 22px 0 4px;
+  color: var(--accent);
+}
+.legal p { margin: 0 0 10px; font-size: 15px; line-height: 1.6; }
+.legal-note { color: var(--ink-muted); font-size: 13px; }
+
 .missing { padding: 40px 24px; }
 .missing h1 { font-family: 'Archivo', 'Inter', sans-serif; font-size: 20px; margin: 0 0 8px; }
 .missing p { margin: 0; color: var(--ink-muted); }
+.missing p + p { margin-top: 14px; }
 
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; animation: none !important; }

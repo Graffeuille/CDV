@@ -1,0 +1,7 @@
+# Les cartes ne sont pas destinées aux moteurs de recherche : elles portent les
+# coordonnées de personnes et ne s'ouvrent que depuis le QR code d'une carte
+# imprimée. Les pages portent aussi une balise noindex.
+User-agent: *
+Disallow: /
+
+# Pas de sitemap : il servirait exactement à ce que cette règle interdit.

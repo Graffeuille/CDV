@@ -41,6 +41,7 @@ Le site est `www.graffeuille.com` pour toute l'équipe.
 | <https://graffeuille.github.io/CDV/> | Entrée de secours. Sans rien après le `#`, elle affiche la carte de Jérôme Goumard. |
 | <https://graffeuille.github.io/CDV/#loic-bernard> | Ancienne forme par identifiant, toujours acceptée pour ne pas invalider un QR déjà imprimé. |
 | <https://graffeuille.github.io/CDV/equipe/sarah-fossard/carte.json> | La fiche brute, telle que la page la lit. |
+| <https://graffeuille.github.io/CDV/mentions-legales.html> | Mentions légales et données personnelles. |
 
 ## Un dossier par personne
 
@@ -124,6 +125,25 @@ QR contenant une vCard fige les coordonnées dans l'encre.
 L'adresse `.../equipe/prenom-nom/` fait 77 caractères : le QR tombe en version 5,
 ses modules mesurent 0,54 mm imprimés à 24 mm, il se scanne sans effort.
 
+## Ce que le site n'a pas, volontairement
+
+| Sujet | Décision |
+| --- | --- |
+| Cookies | Aucun. Pas de bandeau de consentement à afficher : il n'y a rien à consentir. |
+| Mesure d'audience | Aucune. En ajouter une obligerait à demander le consentement et à tenir un registre. Pour une carte de visite, le jeu n'en vaut pas la chandelle. |
+| Formulaire | Aucun. Donc aucune porte d'entrée à spammer, et rien à protéger par captcha. |
+| API, clé, secret | Aucun. Tout est statique : il n'y a pas de code serveur où déplacer quoi que ce soit. |
+| Sitemap | Aucun. Les pages sont en `noindex` et `robots.txt` interdit l'exploration : un sitemap ferait exactement l'inverse. |
+| CGU | Pas obligatoires ici. Les mentions légales, elles, le sont : elles sont dans `mentions-legales.html`. |
+
+HTTPS est imposé par GitHub pour les adresses en `github.io`, et la règle de
+sécurité des pages demande en plus au navigateur de remplacer toute requête
+`http://` résiduelle par `https://`.
+
+Un seul bouton principal par carte, « Ajouter à mes contacts ». « Partager » est
+volontairement en second plan, et le lien vers les mentions légales en pied de
+page.
+
 ## Qui peut modifier les cartes
 
 Le site est un ensemble de fichiers figés : il n'a ni serveur, ni base de
@@ -175,12 +195,22 @@ assets/js/icons.js      les pictogrammes des lignes de contact
 assets/js/logo.js       les tracés du logo GRAFFEUILLE / TURGIS GAILLARD
 assets/css/carte.css    la mise en page (thèmes clair et sombre)
 assets/css/fonts.css    les fontes, servies par le site
-assets/fonts/           Inter et Archivo (SIL OFL 1.1)
-assets/img/             logo, symbole et favicon en SVG
+assets/fonts/           Inter et Archivo, variables (SIL OFL 1.1)
+assets/img/             favicon, logo blanc, image de partage
+404.html                page servie pour toute adresse inconnue
+mentions-legales.html   mentions légales et données personnelles
+robots.txt              interdit l'exploration par les moteurs
 ```
 
 `contact.js` est le seul endroit qui décrit les données ; `carte.js` le seul
 qui décrit la page.
+
+### Les fontes
+
+Inter et Archivo sont des fontes **variables** : un seul fichier couvre toute la
+plage de graisses. Il ne faut donc pas les déclarer une fois par graisse, sous
+peine de faire télécharger les mêmes octets plusieurs fois. `fonts.css` utilise
+une plage (`font-weight: 400 600`), et une carte pèse 145 Ko en tout.
 
 ## Mise en ligne
 
@@ -198,3 +228,14 @@ python3 -m http.server 8000
 puis ouvrir <http://localhost:8000/equipe/jerome-goumard/>. Ouvrir les fichiers
 directement (`file://`) ne marche pas : le navigateur refuse alors de lire
 `carte.json`.
+
+Pour tester `404.html`, il faut servir le dossier **parent** du dépôt, car cette
+page emploie des chemins absolus en `/CDV/` : servie pour une adresse inconnue
+comme `/equipe/xxx/`, une adresse relative se résoudrait depuis un dossier qui
+n'existe pas. C'est la seule page qui dépend du nom du dépôt.
+
+```sh
+cd .. && python3 -m http.server 8000
+```
+
+puis <http://localhost:8000/CDV/404.html>.
